@@ -5,7 +5,7 @@ const Button = styled.button`
   font-family: "Roboto", sans-serif;
   width: 100%;
   height: 48px;
-  margin-top: 8px;
+  margin-top: 24px;
   background-color: #512689;
   color: white;
   border: none;

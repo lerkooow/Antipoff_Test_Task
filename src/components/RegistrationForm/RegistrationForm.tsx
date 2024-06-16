@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useState } from "react";
 import styled from "styled-components";
 import InputField from "../InputField";
-import SubmitButton from "../SubmitButton";
+import SubmitButton from "../Button";
 
 const Wrapper = styled.div`
   width: 100%;
