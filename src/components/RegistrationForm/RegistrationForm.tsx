@@ -30,7 +30,6 @@ const FormContent = styled.div`
 `;
 
 const Header2 = styled.h2`
-  font-family: "Roboto", sans-serif;
   margin: 0 0 16px 0;
   font-size: 20px;
 `;

@@ -1,16 +1,16 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import styled from "styled-components";
-import { fetchTeamMembers } from "../../store/teamSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks";
 import TitlePage from "./TitlePage";
 import { IoIosArrowDown } from "react-icons/io";
+import { Link } from "react-router-dom";
+import { useFetchTeamMembersQuery } from "../../features/teamSlice";
 
 const MemberCards = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   margin: 64px auto 0 auto;
-  max-width: 1280px;
+  max-width: 975px;
   justify-content: center;
 `;
 
@@ -33,13 +33,10 @@ const MemberImage = styled.img`
 `;
 
 const NameMember = styled.h2`
-  font-family: "Roboto", sans-serif;
   font-size: 20px;
-  font-weight: 400;
 `;
 
 const Button = styled.button`
-  font-family: "Roboto", sans-serif;
   font-size: 16px;
   height: 40px;
   width: 170px;
@@ -54,22 +51,24 @@ const Button = styled.button`
   align-items: center;
 `;
 
-const OurTeam: FC = () => {
-  const dispatch = useAppDispatch();
-  const { members } = useAppSelector((state) => state.team);
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+`;
 
-  useEffect(() => {
-    dispatch(fetchTeamMembers());
-  }, [dispatch]);
+const OurTeam: FC = () => {
+  const { data, isLoading } = useFetchTeamMembersQuery();
 
   return (
     <>
       <TitlePage />
       <MemberCards>
-        {members.map((member) => (
+        {data?.data.map((member) => (
           <MemberCard key={member.id}>
             <MemberImage src={member.avatar} />
-            <NameMember>{`${member.first_name} ${member.last_name}`}</NameMember>
+            <StyledLink to={`/${member.id}`}>
+              <NameMember>{`${member.first_name} ${member.last_name}`}</NameMember>
+            </StyledLink>
           </MemberCard>
         ))}
       </MemberCards>

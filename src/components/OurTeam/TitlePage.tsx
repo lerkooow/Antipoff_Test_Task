@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from "react";
 import styled from "styled-components";
 import { MdExitToApp } from "react-icons/md";
+import { StyledLink } from "../SingleMember/TitleMemberPage";
 
 const HeaderPage = styled.div`
   display: flex;
@@ -12,10 +13,8 @@ const HeaderPage = styled.div`
 
 const Header = styled.h1`
   margin: 64px 0 16px 0;
-  font-family: "Roboto", sans-serif;
   text-align: center;
   font-size: 64px;
-  font-weight: 400;
   color: #fff;
 
   @media (max-width: 425px) {
@@ -24,11 +23,9 @@ const Header = styled.h1`
 `;
 
 const Description = styled.h2`
-  font-family: "Roboto", sans-serif;
   max-width: 846px;
   margin: 0 0 64px 0;
   text-align: center;
-  font-weight: 400;
   font-size: 20px;
   color: #fff;
 
@@ -42,7 +39,6 @@ const Button = styled.button`
   top: 32px;
   right: 80px;
   padding: 8px;
-  font-family: "Roboto", sans-serif;
   font-size: 16px;
   background-color: transparent;
   color: #fff;
@@ -88,7 +84,13 @@ const TitlePage: FC = () => {
   return (
     <div>
       <HeaderPage>
-        {isMobile ? <IconButton /> : <Button>Выход</Button>}
+        {isMobile ? (
+          <IconButton />
+        ) : (
+          <Button>
+            <StyledLink to="/">Выход</StyledLink>
+          </Button>
+        )}
         <Header>Наша команда</Header>
         <Description>
           Это опытные специалисты, хорошо разбирающиеся во всех задачах, которые ложатся на их плечи, и умеющие находить
