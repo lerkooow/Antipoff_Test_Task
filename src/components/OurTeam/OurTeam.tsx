@@ -51,7 +51,7 @@ const Button = styled.button`
   align-items: center;
 `;
 
-const StyledLink = styled(Link)`
+export const StyledLinkBlack = styled(Link)`
   text-decoration: none;
   color: #000;
 `;
@@ -66,9 +66,9 @@ const OurTeam: FC = () => {
         {data?.data.map((member) => (
           <MemberCard key={member.id}>
             <MemberImage src={member.avatar} />
-            <StyledLink to={`/${member.id}`}>
+            <StyledLinkBlack to={`/${member.id}`}>
               <NameMember>{`${member.first_name} ${member.last_name}`}</NameMember>
-            </StyledLink>
+            </StyledLinkBlack>
           </MemberCard>
         ))}
       </MemberCards>

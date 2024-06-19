@@ -55,7 +55,6 @@ const SingleMember: FC = () => {
   }
 
   const { data, isLoading } = useFetchMemberQuery({ id });
-  console.log("🚀 ~ data:", data);
 
   return (
     <>

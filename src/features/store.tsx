@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { teamSlice } from "./teamSlice"; // Import the teamSlice to get its middleware
+import { teamSlice } from "./teamSlice";
+import authReducer from "./authSlice";
 
 const store = configureStore({
   reducer: {
     [teamSlice.reducerPath]: teamSlice.reducer,
+    auth: authReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(teamSlice.middleware),
 });

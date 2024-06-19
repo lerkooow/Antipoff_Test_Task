@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from "react";
 import styled from "styled-components";
 import { MdExitToApp } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFetchMemberQuery } from "../../features/teamSlice";
 
 const HeaderPage = styled.div`
@@ -128,13 +128,14 @@ const WrapperButton = styled.div`
   padding: 39px 80px 0 80px;
 `;
 
-export const StyledLink = styled(Link)`
+export const StyledLinkWhite = styled(Link)`
   text-decoration: none;
   color: #fff;
 `;
 
 const TitleMemberPage: FC = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
 
   const { id } = useParams<{ id: string }>();
 
@@ -154,6 +155,11 @@ const TitleMemberPage: FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/account/login");
+  };
+
   return (
     <div>
       <HeaderPage>
@@ -162,7 +168,7 @@ const TitleMemberPage: FC = () => {
             <IconButtonLeft />
           ) : (
             <Button>
-              <StyledLink to="/our-team">Назад</StyledLink>
+              <StyledLinkWhite to="/our-team">Назад</StyledLinkWhite>
             </Button>
           )}
         </WrapperButton>
@@ -173,15 +179,7 @@ const TitleMemberPage: FC = () => {
             <Role>Партнер</Role>
           </WrapperText>
         </Wrapper>
-        <WrapperButton>
-          {isMobile ? (
-            <IconButtonRight />
-          ) : (
-            <Button>
-              <StyledLink to="/">Выход</StyledLink>
-            </Button>
-          )}
-        </WrapperButton>
+        <WrapperButton>{isMobile ? <IconButtonRight /> : <Button onClick={handleLogout}>Выход</Button>}</WrapperButton>
       </HeaderPage>
     </div>
   );

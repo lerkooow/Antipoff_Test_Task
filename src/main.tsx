@@ -8,6 +8,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RegistrationForm from "./components/RegistrationForm/RegistrationForm.jsx";
 import SingleMember from "./components/SingleMember/SingleMember.jsx";
 import OurTeam from "./components/OurTeam/OurTeam.jsx";
+import LoginForm from "./components/LoginForm/LoginForm";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -16,11 +18,23 @@ const router = createBrowserRouter([
   },
   {
     path: "/our-team",
-    element: <OurTeam />,
+    element: (
+      <ProtectedRoute>
+        <OurTeam />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/:id",
-    element: <SingleMember />,
+    element: (
+      <ProtectedRoute>
+        <SingleMember />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/account/login",
+    element: <LoginForm />,
   },
 ]);
 

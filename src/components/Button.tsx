@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components";
 
-const Button = styled.button`
+const StyledButton = styled.button`
   font-family: "Roboto", sans-serif;
   width: 100%;
   height: 48px;
@@ -13,18 +13,18 @@ const Button = styled.button`
   font-size: 16px;
 `;
 
-interface SubmitButtonProps {
+interface ButtonProps {
   type: "submit" | "button" | "reset";
   children: string;
   onSubmit?: (e: React.FormEvent<HTMLButtonElement>) => void;
 }
 
-const SubmitButton: FC<SubmitButtonProps> = ({ type, onSubmit, children }) => {
+const Button: FC<ButtonProps> = ({ type, onSubmit, children }) => {
   return (
-    <Button type={type} onClick={onSubmit}>
+    <StyledButton type={type} onClick={onSubmit}>
       {children}
-    </Button>
+    </StyledButton>
   );
 };
 
-export default SubmitButton;
+export default Button;
