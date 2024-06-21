@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 interface AuthState {
@@ -8,32 +8,32 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  token: null,
+  token: localStorage.getItem("token"),
   loading: false,
   error: null,
 };
 
-export const loginUser = createAsyncThunk(
+export const loginUser = createAsyncThunk<string, { email: string; password: string }, { rejectValue: string }>(
   "auth/loginUser",
-  async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     if (email !== "eve.holt@reqres.in" || password !== "cityslicka") {
       return rejectWithValue("Неправильный email или пароль");
     }
 
     try {
       const response = await axios.post("https://reqres.in/api/login", { email, password });
-      return response.data.token;
+      return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.response.data.error);
+      return rejectWithValue(error.message);
     }
   }
 );
 
-export const regUser = createAsyncThunk(
+export const regUser = createAsyncThunk<string, { email: string; password: string }, { rejectValue: string }>(
   "auth/regUser",
-  async ({ email, password }: { email: string; password: string }, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     if (email !== "eve.holt@reqres.in" || password !== "pistol") {
-      return rejectWithValue("Ошибка регистрации");
+      return rejectWithValue("Registration error occurred");
     }
 
     try {
@@ -48,36 +48,45 @@ export const regUser = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.token = null;
+      localStorage.removeItem("token");
+    },
+    resetError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(loginUser.fulfilled, (state, action: PayloadAction<string>) => {
         state.loading = false;
         state.token = action.payload;
         localStorage.setItem("token", action.payload);
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(loginUser.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.payload || "Произошла неизвестная ошибка";
       })
       .addCase(regUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(regUser.fulfilled, (state, action) => {
+      .addCase(regUser.fulfilled, (state, action: PayloadAction<string>) => {
         state.loading = false;
         state.token = action.payload;
         localStorage.setItem("token", action.payload);
       })
-      .addCase(regUser.rejected, (state, action) => {
+      .addCase(regUser.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.payload || "Произошла неизвестная ошибка";
       });
   },
 });
 
+export const { logout, resetError } = authSlice.actions;
 export default authSlice.reducer;

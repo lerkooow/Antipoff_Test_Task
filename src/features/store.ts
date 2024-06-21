@@ -1,13 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { teamSlice } from "./teamSlice";
+import { memberSlice } from "./memberSlice";
 import authReducer from "./authSlice";
+import teamSlice from "./teamSlice";
 
 const store = configureStore({
   reducer: {
-    [teamSlice.reducerPath]: teamSlice.reducer,
+    [memberSlice.reducerPath]: memberSlice.reducer,
+    team: teamSlice,
     auth: authReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(teamSlice.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(memberSlice.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

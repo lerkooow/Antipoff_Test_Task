@@ -1,9 +1,11 @@
 import { FC } from "react";
+import { useParams } from "react-router-dom";
+
 import styled from "styled-components";
 
 import TitleMemberPage from "./TitleMemberPage";
-import { useFetchMemberQuery } from "../../features/teamSlice";
-import { useParams } from "react-router-dom";
+import { useFetchMemberQuery } from "../../features/memberSlice";
+
 import { AiOutlineMail } from "react-icons/ai";
 
 const Wrapper = styled.div`

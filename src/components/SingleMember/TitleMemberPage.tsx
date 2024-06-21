@@ -1,19 +1,27 @@
 import { FC, useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
+
 import styled from "styled-components";
+
+import Loading from "../Loading/Loading";
+
 import { MdExitToApp } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { useFetchMemberQuery } from "../../features/teamSlice";
+
+import { useFetchMemberQuery } from "../../features/memberSlice";
+import { useAppDispatch } from "../../hooks";
+import { logout } from "../../features/authSlice";
 
 const HeaderPage = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
   align-items: flex-start;
   background-color: #512689;
+  min-height: 298px;
 
   @media (max-width: 768px) {
     display: block;
+    min-height: 475px;
   }
 `;
 
@@ -133,9 +141,18 @@ export const StyledLinkWhite = styled(Link)`
   color: #fff;
 `;
 
+const StyledLoading = styled.div`
+  margin-top: 60px;
+  color: #fff;
+
+  @media (max-width: 768px) {
+    margin-top: 115px;
+  }
+`;
+
 const TitleMemberPage: FC = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const { id } = useParams<{ id: string }>();
 
@@ -156,8 +173,7 @@ const TitleMemberPage: FC = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/account/login");
+    dispatch(logout());
   };
 
   return (
@@ -165,7 +181,9 @@ const TitleMemberPage: FC = () => {
       <HeaderPage>
         <WrapperButton>
           {isMobile ? (
-            <IconButtonLeft />
+            <Link to="/our-team">
+              <IconButtonLeft />
+            </Link>
           ) : (
             <Button>
               <StyledLinkWhite to="/our-team">Назад</StyledLinkWhite>
@@ -173,13 +191,23 @@ const TitleMemberPage: FC = () => {
           )}
         </WrapperButton>
         <Wrapper>
-          <MemberImage src={data?.data.avatar} />
-          <WrapperText>
-            <Name>{`${data?.data.first_name} ${data?.data.last_name}`}</Name>
-            <Role>Партнер</Role>
-          </WrapperText>
+          {isLoading ? (
+            <StyledLoading>
+              <Loading />
+            </StyledLoading>
+          ) : (
+            <>
+              <MemberImage src={data?.data.avatar} />
+              <WrapperText>
+                <Name>{`${data?.data.first_name} ${data?.data.last_name}`}</Name>
+                <Role>Партнер</Role>
+              </WrapperText>
+            </>
+          )}
         </Wrapper>
-        <WrapperButton>{isMobile ? <IconButtonRight /> : <Button onClick={handleLogout}>Выход</Button>}</WrapperButton>
+        <WrapperButton>
+          {isMobile ? <IconButtonRight onClick={handleLogout} /> : <Button onClick={handleLogout}>Выход</Button>}
+        </WrapperButton>
       </HeaderPage>
     </div>
   );

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "../features/utils/constants";
+import { BASE_URL } from "./utils/constants";
 
-interface TeamMember {
+export interface TeamMember {
   id: number;
   email: string;
   first_name: string;
@@ -9,23 +9,14 @@ interface TeamMember {
   avatar: string;
 }
 
-export interface Users {
-  data: TeamMember[];
-}
-
 export interface UsersId {
   data: TeamMember;
 }
 
-export const teamSlice = createApi({
+export const memberSlice = createApi({
   reducerPath: "usersApi",
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   endpoints: (builder) => ({
-    fetchTeamMembers: builder.query<Users, void>({
-      query: () => ({
-        url: "/users",
-      }),
-    }),
     fetchMember: builder.query<UsersId, { id: string }>({
       query: ({ id }) => ({
         url: `/users/${id}`,
@@ -34,5 +25,5 @@ export const teamSlice = createApi({
   }),
 });
 
-export const { useFetchTeamMembersQuery, useFetchMemberQuery } = teamSlice;
-export default teamSlice.reducer;
+export const { useFetchMemberQuery } = memberSlice;
+export default memberSlice.reducer;

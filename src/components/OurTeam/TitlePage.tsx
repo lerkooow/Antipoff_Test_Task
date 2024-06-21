@@ -1,7 +1,11 @@
 import { FC, useState, useEffect } from "react";
+
 import styled from "styled-components";
+
+import { logout } from "../../features/authSlice";
+import { useAppDispatch } from "../../hooks";
+
 import { MdExitToApp } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 
 const HeaderPage = styled.div`
   display: flex;
@@ -70,7 +74,7 @@ const IconButton = styled(MdExitToApp)`
 
 const TitlePage: FC = () => {
   const [isMobile, setIsMobile] = useState(false);
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const handleResize = () => {
@@ -78,19 +82,16 @@ const TitlePage: FC = () => {
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/account/login");
+    dispatch(logout());
   };
 
   return (
     <div>
       <HeaderPage>
-        {isMobile ? <IconButton /> : <Button onClick={handleLogout}>Выход</Button>}
+        {isMobile ? <IconButton onClick={handleLogout} /> : <Button onClick={handleLogout}>Выход</Button>}
         <Header>Наша команда</Header>
         <Description>
           Это опытные специалисты, хорошо разбирающиеся во всех задачах, которые ложатся на их плечи, и умеющие находить

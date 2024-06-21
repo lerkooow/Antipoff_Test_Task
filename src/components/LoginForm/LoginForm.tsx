@@ -1,12 +1,17 @@
-import React, { ChangeEvent, FC, useState, useEffect } from "react";
+import { ChangeEvent, FC, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import styled from "styled-components";
+
 import InputField from "../InputField";
 import Button from "../Button";
-import { loginUser } from "../../features/authSlice";
+import { loginUser, resetError } from "../../features/authSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { useNavigate } from "react-router-dom";
 import { StyledLinkBlack } from "../OurTeam/OurTeam";
 import { validateEmail, validatePassword } from "../../validation/validation";
+
+import { LuEye } from "react-icons/lu";
+import { LuEyeOff } from "react-icons/lu";
 
 const FormContainer = styled.div`
   display: grid;
@@ -16,7 +21,8 @@ const FormContainer = styled.div`
 `;
 
 const Form = styled.form`
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   height: auto;
   border-radius: 16px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -49,16 +55,36 @@ const Error = styled.p`
   font-size: 20px;
 `;
 
+const PasswordField = styled.div`
+  position: relative;
+`;
+
+const PasswordIcon = styled.span`
+  position: absolute;
+  right: 20px;
+  top: 40px;
+`;
+
 const LoginForm: FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(true);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { token, error } = useAppSelector((state) => state.auth);
 
-  const { token, loading, error } = useAppSelector((state) => state.auth);
+  useEffect(() => {
+    if (token) {
+      navigate("/our-team");
+    }
+
+    return () => {
+      dispatch(resetError());
+    };
+  }, [token, dispatch]);
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -69,10 +95,18 @@ const LoginForm: FC = () => {
   };
 
   const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+    const value = e.target.value;
+    setPassword(value);
+
+    const error = validatePassword(value);
+    setPasswordError(error);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const emailValidationError = validateEmail(email);
@@ -81,49 +115,44 @@ const LoginForm: FC = () => {
     setEmailError(emailValidationError);
     setPasswordError(passwordValidationError);
 
-    if (emailValidationError || passwordValidationError) {
-      return;
-    }
+    if (emailValidationError || passwordValidationError) return;
 
-    if (token) {
-      navigate("/our-team");
-    }
-
-    dispatch(loginUser({ email, password }));
+    await dispatch(loginUser({ email, password }));
   };
 
   return (
-    <>
-      <FormContainer>
-        <Form onSubmit={handleSubmit}>
-          <FormContent>
-            <Header2>Вход</Header2>
-            <InputField
-              label="Электронная почта"
-              type="email"
-              placeholder="example@mail.ru"
-              value={email}
-              onChange={handleEmailChange}
-              error={Boolean(emailError)}
-              errorMessage={emailError}
-            />
+    <FormContainer>
+      <Form onSubmit={handleSubmit}>
+        <FormContent>
+          <Header2>Вход</Header2>
+          <InputField
+            label="Электронная почта"
+            type="email"
+            placeholder="example@mail.ru"
+            value={email}
+            onChange={handleEmailChange}
+            error={Boolean(emailError)}
+            errorMessage={emailError}
+          />
+          <PasswordField>
             <InputField
               label="Пароль"
-              type="password"
+              type={showPassword ? "password" : "text"}
               value={password}
               onChange={handlePasswordChange}
               error={Boolean(passwordError)}
               errorMessage={passwordError}
             />
-            <Button type="submit">Войти</Button>
-            <RegText>
-              <Error>{error}</Error>
-              <StyledLinkBlack to="/">Еще нет аккаунта? Зарегистрируйтесь</StyledLinkBlack>
-            </RegText>
-          </FormContent>
-        </Form>
-      </FormContainer>
-    </>
+            <PasswordIcon onClick={toggleShowPassword}>{showPassword ? <LuEyeOff /> : <LuEye />}</PasswordIcon>
+          </PasswordField>
+          <Button type="submit">Войти</Button>
+          <RegText>
+            <Error>{error}</Error>
+            <StyledLinkBlack to="/">Еще нет аккаунта? Зарегистрируйтесь</StyledLinkBlack>
+          </RegText>
+        </FormContent>
+      </Form>
+    </FormContainer>
   );
 };
 
