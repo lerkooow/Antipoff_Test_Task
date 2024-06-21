@@ -74,7 +74,7 @@ const LoginForm: FC = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { token, error } = useAppSelector((state) => state.auth);
+  const { token, error, loading } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
     if (token) {
@@ -145,7 +145,7 @@ const LoginForm: FC = () => {
             />
             <PasswordIcon onClick={toggleShowPassword}>{showPassword ? <LuEyeOff /> : <LuEye />}</PasswordIcon>
           </PasswordField>
-          <Button type="submit">Войти</Button>
+          <Button type="submit">{loading ? "Вход..." : "Войти"}</Button>
           <RegText>
             <Error>{error}</Error>
             <StyledLinkBlack to="/account/registration">Еще нет аккаунта? Зарегистрируйтесь</StyledLinkBlack>
