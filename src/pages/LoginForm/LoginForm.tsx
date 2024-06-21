@@ -148,7 +148,7 @@ const LoginForm: FC = () => {
           <Button type="submit">Войти</Button>
           <RegText>
             <Error>{error}</Error>
-            <StyledLinkBlack to="/">Еще нет аккаунта? Зарегистрируйтесь</StyledLinkBlack>
+            <StyledLinkBlack to="/account/registration">Еще нет аккаунта? Зарегистрируйтесь</StyledLinkBlack>
           </RegText>
         </FormContent>
       </Form>
