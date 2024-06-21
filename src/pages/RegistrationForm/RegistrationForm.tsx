@@ -39,7 +39,7 @@ const Header2 = styled.h2`
   font-size: 20px;
 `;
 
-const LoginText = styled.p`
+const LoginText = styled.div`
   margin: 0;
   text-align: center;
   font-size: 20px;

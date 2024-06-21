@@ -116,6 +116,10 @@ const OurTeam: FC = () => {
     dispatch(toggleLike(id));
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <>
       <TitlePage />
@@ -125,7 +129,7 @@ const OurTeam: FC = () => {
             <Loading />
           ) : (
             members.map((item: TeamMember) => (
-              <StyledLinkBlack to={`/users/${item.id}`} key={item.id}>
+              <StyledLinkBlack to={`/users/${item.id}`} key={item.id} onClick={scrollToTop}>
                 <MemberCard>
                   <MemberImage src={item.avatar} />
                   <NameMember>{`${item.first_name} ${item.last_name}`}</NameMember>

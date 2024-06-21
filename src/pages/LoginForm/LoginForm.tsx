@@ -41,7 +41,7 @@ const Header2 = styled.h2`
   font-size: 20px;
 `;
 
-const RegText = styled.p`
+const RegText = styled.div`
   text-align: center;
   font-size: 20px;
   position: relative;
