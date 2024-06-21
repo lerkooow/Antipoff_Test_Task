@@ -10,7 +10,7 @@ interface ProtectedRouteProps {
 const ProtectedRouteLoginUser: FC<ProtectedRouteProps> = ({ children }) => {
   const { token } = useAppSelector((state) => state.auth);
 
-  if (!token) {
+  if (token) {
     return <Navigate to="/" />;
   }
 
