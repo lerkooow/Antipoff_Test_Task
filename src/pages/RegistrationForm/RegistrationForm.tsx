@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
 
-import InputField from "../InputField";
-import SubmitButton from "../Button";
-import { StyledLinkBlack } from "../OurTeam/OurTeam";
+import InputField from "../../components/InputField";
+import SubmitButton from "../../components/Button";
+import { StyledLinkBlack } from "../../pages/OurTeam/OurTeam";
 
 import { validateConfirmPassword, validateEmail, validateName, validatePassword } from "../../validation/validation";
 import { regUser, resetError } from "../../features/authSlice";
@@ -83,7 +83,7 @@ const RegistrationForm: FC = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/our-team");
+      navigate("/");
     }
 
     return () => {

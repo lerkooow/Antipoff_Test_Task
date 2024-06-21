@@ -2,8 +2,8 @@ import { FC, useState, useEffect } from "react";
 
 import styled from "styled-components";
 
-import { logout } from "../../features/authSlice";
-import { useAppDispatch } from "../../hooks";
+import { logout } from "../features/authSlice";
+import { useAppDispatch } from "../hooks";
 
 import { MdExitToApp } from "react-icons/md";
 

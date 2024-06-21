@@ -11,6 +11,7 @@ const StyledButton = styled.button`
   border: none;
   border-radius: 8px;
   font-size: 16px;
+  cursor: pointer;
 `;
 
 interface ButtonProps {

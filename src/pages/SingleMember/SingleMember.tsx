@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 import styled from "styled-components";
 
-import TitleMemberPage from "./TitleMemberPage";
+import TitleMemberPage from "../../components/TitleMemberPage";
 import { useFetchMemberQuery } from "../../features/memberSlice";
 
 import { AiOutlineMail } from "react-icons/ai";
@@ -56,7 +56,7 @@ const SingleMember: FC = () => {
     return <div>Member ID is missing</div>;
   }
 
-  const { data, isLoading } = useFetchMemberQuery({ id });
+  const { data } = useFetchMemberQuery({ id });
 
   return (
     <>

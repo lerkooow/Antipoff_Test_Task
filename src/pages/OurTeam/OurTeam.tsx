@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 
-import TitlePage from "./TitlePage";
-import Loading from "../Loading/Loading";
-
+import TitlePage from "../../components/TitlePage";
+import Loading from "../../components/Loading/Loading";
 import { TeamMember } from "../../features/teamSlice";
 import { fetchTeamMembers, setPage, toggleLike, loadLikes } from "../../features/teamSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -32,6 +31,13 @@ const MemberCard = styled.div`
   height: 263px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid transparent;
+
+  &:hover {
+    border-color: #000;
+  }
 `;
 
 const MemberImage = styled.img`
@@ -62,14 +68,16 @@ const WrapperPageNumber = styled.div`
   justify-content: center;
 `;
 
-const IconBack = styled(IoIosArrowBack)`
+const IconBack = styled(IoIosArrowBack)<{ disabled: boolean }>`
   margin: 40px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? "" : "pointer")};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 
-const IconForward = styled(IoIosArrowForward)`
+const IconForward = styled(IoIosArrowForward)<{ disabled: boolean }>`
   margin: 40px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? "" : "pointer")};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 
 const IconHear = styled.div`
@@ -117,22 +125,28 @@ const OurTeam: FC = () => {
             <Loading />
           ) : (
             members.map((item: TeamMember) => (
-              <MemberCard key={item.id}>
-                <MemberImage src={item.avatar} />
-                <StyledLinkBlack to={`/${item.id}`}>
+              <StyledLinkBlack to={`/users/${item.id}`} key={item.id}>
+                <MemberCard>
+                  <MemberImage src={item.avatar} />
                   <NameMember>{`${item.first_name} ${item.last_name}`}</NameMember>
-                </StyledLinkBlack>
-                <IconHear onClick={() => handleToggleLike(item.id)}>
-                  {liked[item.id] ? <GoHeartFill color="#512689" /> : <GoHeart />}
-                </IconHear>
-              </MemberCard>
+                  <IconHear
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      handleToggleLike(item.id);
+                    }}
+                  >
+                    {liked[item.id] ? <GoHeartFill color="#512689" /> : <GoHeart />}
+                  </IconHear>
+                </MemberCard>
+              </StyledLinkBlack>
             ))
           )}
         </MemberCards>
         <WrapperPageNumber>
-          <IconBack onClick={handlePrevPage} />
+          <IconBack onClick={handlePrevPage} disabled={page <= 1} />
           <p>{page}</p>
-          <IconForward onClick={handleNextPage} />
+          <IconForward onClick={handleNextPage} disabled={page >= total_pages} />
         </WrapperPageNumber>
       </Wrapper>
     </>

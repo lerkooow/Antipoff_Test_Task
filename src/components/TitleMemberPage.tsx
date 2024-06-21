@@ -3,14 +3,14 @@ import { Link, useParams } from "react-router-dom";
 
 import styled from "styled-components";
 
-import Loading from "../Loading/Loading";
+import Loading from "./Loading/Loading";
 
 import { MdExitToApp } from "react-icons/md";
 import { IoIosArrowBack } from "react-icons/io";
 
-import { useFetchMemberQuery } from "../../features/memberSlice";
-import { useAppDispatch } from "../../hooks";
-import { logout } from "../../features/authSlice";
+import { useFetchMemberQuery } from "../features/memberSlice";
+import { useAppDispatch } from "../hooks";
+import { logout } from "../features/authSlice";
 
 const HeaderPage = styled.div`
   display: flex;
@@ -181,12 +181,12 @@ const TitleMemberPage: FC = () => {
       <HeaderPage>
         <WrapperButton>
           {isMobile ? (
-            <Link to="/our-team">
+            <Link to="/">
               <IconButtonLeft />
             </Link>
           ) : (
             <Button>
-              <StyledLinkWhite to="/our-team">Назад</StyledLinkWhite>
+              <StyledLinkWhite to="/">Назад</StyledLinkWhite>
             </Button>
           )}
         </WrapperButton>

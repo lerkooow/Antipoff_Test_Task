@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
 
-import InputField from "../InputField";
-import Button from "../Button";
+import InputField from "../../components/InputField";
+import Button from "../../components/Button";
 import { loginUser, resetError } from "../../features/authSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { StyledLinkBlack } from "../OurTeam/OurTeam";
@@ -78,7 +78,7 @@ const LoginForm: FC = () => {
 
   useEffect(() => {
     if (token) {
-      navigate("/our-team");
+      navigate("/");
     }
 
     return () => {

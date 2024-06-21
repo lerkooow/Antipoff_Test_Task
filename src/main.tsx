@@ -5,19 +5,24 @@ import "./index.css";
 import { Provider } from "react-redux";
 import store from "./features/store";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import RegistrationForm from "./components/RegistrationForm/RegistrationForm.jsx";
-import SingleMember from "./components/SingleMember/SingleMember.jsx";
-import OurTeam from "./components/OurTeam/OurTeam.jsx";
-import LoginForm from "./components/LoginForm/LoginForm";
+import RegistrationForm from "./pages/RegistrationForm/RegistrationForm";
+import SingleMember from "./pages/SingleMember/SingleMember";
+import OurTeam from "./pages/OurTeam/OurTeam";
+import LoginForm from "./pages/LoginForm/LoginForm";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import ProtectedRouteLoginUser from "./components/ProtectedRoute/ProtectedRouteLoginUser";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <RegistrationForm />,
+    path: "/account/registration",
+    element: (
+      <ProtectedRouteLoginUser>
+        <RegistrationForm />
+      </ProtectedRouteLoginUser>
+    ),
   },
   {
-    path: "/our-team",
+    path: "/",
     element: (
       <ProtectedRoute>
         <OurTeam />
@@ -25,7 +30,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/:id",
+    path: "/users/:id",
     element: (
       <ProtectedRoute>
         <SingleMember />
@@ -34,7 +39,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/account/login",
-    element: <LoginForm />,
+    element: (
+      <ProtectedRouteLoginUser>
+        <LoginForm />
+      </ProtectedRouteLoginUser>
+    ),
   },
 ]);
 

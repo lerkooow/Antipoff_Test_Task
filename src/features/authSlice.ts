@@ -22,7 +22,7 @@ export const loginUser = createAsyncThunk<string, { email: string; password: str
 
     try {
       const response = await axios.post("https://reqres.in/api/login", { email, password });
-      return response.data;
+      return response.data.token;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
@@ -79,7 +79,7 @@ const authSlice = createSlice({
       .addCase(regUser.fulfilled, (state, action: PayloadAction<string>) => {
         state.loading = false;
         state.token = action.payload;
-        localStorage.setItem("token", action.payload);
+        localStorage.setItem("token", JSON.stringify(action.payload));
       })
       .addCase(regUser.rejected, (state, action: PayloadAction<string | undefined>) => {
         state.loading = false;
