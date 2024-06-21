@@ -201,7 +201,7 @@ const RegistrationForm: FC = () => {
         </FormContent>
         <LoginText>
           <Error>{error}</Error>
-          <StyledLinkBlack to="account/login">Уже есть аккаунт? Войдите</StyledLinkBlack>
+          <StyledLinkBlack to="/account/login">Уже есть аккаунт? Войдите</StyledLinkBlack>
         </LoginText>
       </Form>
     </Wrapper>

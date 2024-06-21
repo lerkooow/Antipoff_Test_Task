@@ -33,7 +33,7 @@ export const regUser = createAsyncThunk<string, { email: string; password: strin
   "auth/regUser",
   async ({ email, password }, { rejectWithValue }) => {
     if (email !== "eve.holt@reqres.in" || password !== "pistol") {
-      return rejectWithValue("Registration error occurred");
+      return rejectWithValue("При регистрации произошла ошибка");
     }
 
     try {
